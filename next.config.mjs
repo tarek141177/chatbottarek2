@@ -10,11 +10,18 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
-    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs']
+    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs'],
+    esmExternals: 'loose'
   },
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.externals.push('@prisma/client')
+    }
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
     }
     return config
   },
