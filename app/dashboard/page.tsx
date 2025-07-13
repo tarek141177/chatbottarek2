@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Plus, MessageSquare, Settings, Code } from "lucide-react"
 
+export const dynamic = "force-dynamic"
+
 export default async function DashboardPage() {
   const chatAgents = await prisma.chatAgent.findMany({
     include: {

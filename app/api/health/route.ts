@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma"
 export async function GET() {
   try {
     // Test database connection
-    await prisma.$connect()
+    // await prisma.$connect() // Removed explicit connect
 
     // Test a simple query
     const userCount = await prisma.user.count()
