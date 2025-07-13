@@ -4,6 +4,9 @@ import { redirect } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
+// Force this page to be dynamic, as it uses getServerSession which relies on headers/cookies.
+export const dynamic = "force-dynamic"
+
 export default async function HomePage() {
   try {
     const session = await getServerSession(authOptions)
@@ -46,7 +49,7 @@ export default async function HomePage() {
 
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h3 className="text-xl font-semibold mb-4">Your AI, Your Rules</h3>
-              <p className="text-gray-600">Connect any AI API provider with custom templates and configurations.</p>
+              <p className="text-600">Connect any AI API provider with custom templates and configurations.</p>
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md">
@@ -59,11 +62,12 @@ export default async function HomePage() {
     )
   } catch (error) {
     console.error("HomePage error:", error)
+    // Fallback UI in case of an error during session retrieval or other server-side issues
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Welcome to AI Chat SaaS</h1>
-          <p className="text-gray-600 mb-4">Loading...</p>
+          <p className="text-gray-600 mb-4">Please sign in to continue.</p>
           <Link href="/auth/signin">
             <Button>Sign In</Button>
           </Link>
