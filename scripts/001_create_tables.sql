@@ -151,7 +151,7 @@ ALTER TABLE "ChatMessage" ADD CONSTRAINT "ChatMessage_chatSessionId_fkey" FOREIG
 CREATE INDEX "Account_userId_idx" ON "Account"("userId");
 CREATE INDEX "Session_userId_idx" ON "Session"("userId");
 CREATE INDEX "ChatAgent_userId_idx" ON "ChatAgent"("userId");
-CREATE INDEX "KnowledgeBase_chatAgentId_idx" ON "KnowledgeBase"("chatAgentId");
+CREATE CREATE INDEX "KnowledgeBase_chatAgentId_idx" ON "KnowledgeBase"("chatAgentId");
 CREATE INDEX "ApiConfig_userId_idx" ON "ApiConfig"("userId");
 CREATE INDEX "ChatSession_userId_idx" ON "ChatSession"("userId");
 CREATE INDEX "ChatSession_chatAgentId_idx" ON "ChatSession"("chatAgentId");

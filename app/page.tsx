@@ -16,14 +16,9 @@ export default async function HomePage() {
           </p>
 
           <div className="space-x-4">
-            <Link href="/auth/signup">
+            <Link href="/dashboard">
               <Button size="lg" className="px-8 py-3">
-                Get Started Free
-              </Button>
-            </Link>
-            <Link href="/auth/signin">
-              <Button variant="outline" size="lg" className="px-8 py-3 bg-transparent">
-                Sign In
+                Go to Dashboard
               </Button>
             </Link>
           </div>
