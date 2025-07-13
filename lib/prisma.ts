@@ -1,20 +1,26 @@
 import { PrismaClient } from "@prisma/client"
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined
+// Declare a global variable to store the PrismaClient instance
+// This is necessary to prevent hot-reloading from creating new instances in development
+declare global {
+  // eslint-disable-next-line no-var
+  var prismaGlobal: PrismaClient | undefined
 }
 
+// Initialize PrismaClient once globally
 export const prisma =
-  globalForPrisma.prisma ??
+  global.prismaGlobal ||
   new PrismaClient({
     log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   })
 
+// In development, store the PrismaClient instance on the global object
+// This prevents new instances from being created on hot-reloads
 if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma
+  global.prismaGlobal = prisma
 }
 
-// Test the connection
+// Optional: Function to test database connection (for health checks or debugging)
 export async function testConnection() {
   try {
     await prisma.$connect()
