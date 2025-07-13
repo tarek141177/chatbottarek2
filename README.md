@@ -8,7 +8,6 @@ A full-stack SaaS application that allows users to create and manage AI chat age
 - 📚 Knowledge base management (Q&A entries, CSV/JSON upload)
 - 🔧 Configure external AI API providers
 - 🎨 Customizable chat widget
-- 📊 Multi-tenant architecture
 - 🔐 Secure API key storage
 - 📱 Responsive dashboard
 
@@ -17,7 +16,6 @@ A full-stack SaaS application that allows users to create and manage AI chat age
 - **Frontend**: Next.js 14, TailwindCSS, TypeScript
 - **Backend**: Next.js API Routes
 - **Database**: PostgreSQL with Prisma ORM
-- **Authentication**: NextAuth.js
 - **Deployment**: Vercel
 
 ## Getting Started
@@ -48,8 +46,9 @@ cp .env.example .env.local
 
 Fill in your environment variables:
 - `DATABASE_URL`: PostgreSQL connection string
-- `NEXTAUTH_SECRET`: Random secret for NextAuth
 - `ENCRYPTION_KEY`: 32-character key for API key encryption
+
+Run the default user script to create an initial user.
 
 4. Set up the database:
 \`\`\`bash
@@ -85,12 +84,11 @@ For production, use a managed PostgreSQL service like:
 
 ### Creating a Chat Agent
 
-1. Sign up/login to your dashboard
-2. Click "New Chat Agent"
-3. Configure your knowledge base
-4. Set up your AI API configuration
-5. Customize the widget appearance
-6. Get the embed code
+1. Click "New Chat Agent"
+2. Configure your knowledge base
+3. Set up your AI API configuration
+4. Customize the widget appearance
+5. Get the embed code
 
 ### Embedding the Widget
 
@@ -138,10 +136,7 @@ Example for OpenAI:
 ## Security Features
 
 - 🔐 Encrypted API key storage
-- 🏢 Multi-tenant data isolation
 - 🛡️ Input validation and sanitization
-- 🚦 Rate limiting (implement as needed)
-- 🔒 Secure authentication
 
 ## Contributing
 

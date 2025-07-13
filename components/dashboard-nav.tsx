@@ -1,19 +1,11 @@
 "use client"
 
-import { signOut } from "next-auth/react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { User, LogOut, Settings } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { User } from "lucide-react"
 
-interface DashboardNavProps {
-  user: {
-    name?: string | null
-    email?: string | null
-  }
-}
-
-export function DashboardNav({ user }: DashboardNavProps) {
+export function DashboardNav() {
   return (
     <nav className="bg-white border-b border-gray-200">
       <div className="container mx-auto px-4">
@@ -40,21 +32,9 @@ export function DashboardNav({ user }: DashboardNavProps) {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="flex items-center space-x-2">
                 <User className="w-4 h-4" />
-                <span>{user.name || user.email}</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/settings" className="flex items-center">
-                  <Settings className="w-4 h-4 mr-2" />
-                  Settings
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => signOut()}>
-                <LogOut className="w-4 h-4 mr-2" />
-                Sign Out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
+            <DropdownMenuContent align="end"></DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>

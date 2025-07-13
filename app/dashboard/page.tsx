@@ -1,5 +1,3 @@
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -7,10 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Plus, MessageSquare, Settings, Code } from "lucide-react"
 
 export default async function DashboardPage() {
-  const session = await getServerSession(authOptions)
-
   const chatAgents = await prisma.chatAgent.findMany({
-    where: { userId: session!.user.id },
     include: {
       _count: {
         select: {
@@ -21,9 +16,7 @@ export default async function DashboardPage() {
     },
   })
 
-  const apiConfigs = await prisma.apiConfig.findMany({
-    where: { userId: session!.user.id },
-  })
+  const apiConfigs = await prisma.apiConfig.findMany({})
 
   return (
     <div className="space-y-8">

@@ -1,6 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { z } from "zod"
 
@@ -11,9 +9,16 @@ const createAgentSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    // Fetch the ID of the default user
+    const defaultUser = await prisma.user.findUnique({
+      where: { id: "00000000-0000-0000-0000-000000000001" },
+    })
+
+    if (!defaultUser) {
+      return NextResponse.json(
+        { error: "Default user not found. Please run the default user creation script." },
+        { status: 500 },
+      )
     }
 
     const body = await request.json()
@@ -23,7 +28,7 @@ export async function POST(request: NextRequest) {
       data: {
         name,
         description,
-        userId: session.user.id,
+        userId: defaultUser.id, // Assign to the default user
       },
     })
 
@@ -36,13 +41,8 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
+    // Fetch all agents, as there's no specific user context
     const agents = await prisma.chatAgent.findMany({
-      where: { userId: session.user.id },
       include: {
         _count: {
           select: {
