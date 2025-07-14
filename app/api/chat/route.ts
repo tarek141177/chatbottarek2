@@ -10,18 +10,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Message and chatAgentId are required" }, { status: 400 })
     }
 
-    // Get chat agent with user's API config
+    // Get chat agent
     const chatAgent = await prisma.chatAgent.findUnique({
       where: { id: chatAgentId },
       include: {
-        user: {
-          include: {
-            apiConfigs: {
-              where: { isActive: true },
-              take: 1,
-            },
-          },
-        },
         knowledgeBase: true,
         widgetConfig: true,
       },
@@ -31,9 +23,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Chat agent not found or inactive" }, { status: 404 })
     }
 
-    const apiConfig = chatAgent.user.apiConfigs[0]
+    // Get API config directly using chatAgent's userId
+    const apiConfig = await prisma.apiConfig.findFirst({
+      where: { userId: chatAgent.userId, isActive: true },
+      take: 1,
+    })
+
     if (!apiConfig) {
-      return NextResponse.json({ error: "No API configuration found" }, { status: 400 })
+      return NextResponse.json({ error: "No active API configuration found for this agent's user" }, { status: 400 })
     }
 
     // Find or create chat session
@@ -45,11 +42,23 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    // Fetch the ID of the default user to assign to new chat sessions
+    const defaultUser = await prisma.user.findUnique({
+      where: { id: "00000000-0000-0000-0000-000000000001" },
+    })
+
+    if (!defaultUser) {
+      return NextResponse.json(
+        { error: "Default user not found. Please run the default user creation script." },
+        { status: 500 },
+      )
+    }
+
     if (!chatSession) {
       chatSession = await prisma.chatSession.create({
         data: {
           chatAgentId,
-          userId: chatAgent.userId,
+          userId: defaultUser.id, // Assign to the default user
         },
         include: { messages: true },
       })

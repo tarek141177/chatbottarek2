@@ -17,6 +17,7 @@ export default async function AgentPage({ params }: AgentPageProps) {
   const agent = await prisma.chatAgent.findFirst({
     where: {
       id: params.id,
+      // Removed userId filtering as authentication is removed
     },
     include: {
       knowledgeBase: true,
